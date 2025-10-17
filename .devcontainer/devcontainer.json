@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Petit Farmer - Paniers Bio & Recettes Livrés Chez Vous</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%2334d399'/><text x='50' y='60' font-family='Arial' font-size='40' text-anchor='middle' fill='white'>🌱</text></svg>" type="image/svg+xml">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            box-sizing: border-box;
+        }
+        
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .hero-gradient {
+            background: linear-gradient(135deg, #065f46 0%, #34d399 50%, #10b981 100%);
+        }
+        
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+        }
+        
+        .popular-badge {
+            position: absolute;
+            top: -8px;
+            right: 16px;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 16px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+        }
+        
+        .video-container {
+            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+            border: 2px dashed #cbd5e1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .video-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            animation: shimmer 2s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #059669, #34d399);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 14px rgba(5, 150, 105, 0.3);
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #047857, #10b981);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(5, 150, 105, 0.4);
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: #059669;
+            border: 2px solid #34d399;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            background: #34d399;
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .nature-bg {
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2334d399' fill-opacity='0.03'%3E%3Cpath d='M30 30c0-11.046-8.954-20-20-20s-20 8.954-20 20 8.954 20 20 20 20-8.954 20-20zm0 0c0 11.046 8.954 20 20 20s20-8.954 20-20-8.954-20-20-20-20 8.954-20 20z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+        
+        .recipe-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+        
+        .recipe-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+        }
+        
+        .step-number {
+            background: linear-gradient(135deg, #34d399, #10b981);
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+        
+        .pricing-card {
+            position: relative;
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+        
+        .pricing-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+        }
+        
+        .pricing-card.featured {
+            border: 3px solid #34d399;
+            transform: scale(1.05);
+        }
+        
+        .testimonial-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            position: relative;
+        }
+        
+        .testimonial-card::before {
+            content: '"';
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            font-size: 4rem;
+            color: #34d399;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 nature-bg">
+    <!-- Header -->
+    <header class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center cursor-pointer" onclick="scrollToSection('hero')">
+                    <div class="w-12 h-12 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-full flex items-center justify-center mr-3 shadow-lg">
+                        <span class="text-white text-2xl">🌱</span>
+                    </div>
+                    <span class="text-3xl font-bold bg-gradient-to-r from-emerald-600 to-emerald-800 bg-clip-text text-transparent">Petit Farmer</span>
+                </div>
+                
+                <nav class="hidden lg:flex space-x-8">
+                    <a href="#" onclick="scrollToSection('recipes')" class="text-gray-700 hover:text-emerald-600 font-medium transition-colors">Nos Recettes</a>
+                    <a href="#" onclick="scrollToSection('how-it-works')" class="text-gray-700 hover:text-emerald-600 font-medium transition-colors">Comment ça marche</a>
+                    <a href="#" onclick="scrollToSection('pricing')" class="text-gray-700 hover:text-emerald-600 font-medium transition-colors">Nos Formules</a>
+                    <a href="#" onclick="scrollToSection('about')" class="text-gray-700 hover:text-emerald-600 font-medium transition-colors">Nos Producteurs</a>
+                    <a href="#" onclick="scrollToSection('contact')" class="text-gray-700 hover:text-emerald-600 font-medium transition-colors">Contact</a>
+                </nav>
+                
+                <div class="flex items-center space-x-4">
+                    <button onclick="openLoginModal()" class="text-emerald-600 hover:text-emerald-700 font-medium">Se connecter</button>
+                    <button onclick="scrollToSection('pricing')" class="btn-primary text-white px-8 py-3 rounded-full font-semibold">Commencer</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero-gradient text-white py-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div>
+                    <h1 class="text-6xl font-bold mb-8 leading-tight">Cuisinez bio avec nos recettes et ingrédients frais</h1>
+                    <p class="text-2xl mb-10 text-emerald-100 leading-relaxed">Recevez chaque semaine des recettes créatives et tous les ingrédients bio pré-dosés, directement de nos petits producteurs locaux.</p>
+                    <div class="flex flex-col sm:flex-row gap-6">
+                        <button onclick="scrollToSection('pricing')" class="bg-white text-emerald-700 px-10 py-5 rounded-full font-bold text-xl hover:bg-gray-100 transition-all transform hover:scale-105">Découvrir nos formules</button>
+                        <button onclick="scrollToSection('recipes')" class="border-3 border-white text-white px-10 py-5 rounded-full font-bold text-xl hover:bg-white hover:text-emerald-700 transition-all">Voir nos recettes</button>
+                    </div>
+                    <div class="mt-12 flex items-center space-x-8">
+                        <div class="text-center">
+                            <div class="text-3xl font-bold">500+</div>
+                            <div class="text-emerald-200">Recettes disponibles</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold">100%</div>
+                            <div class="text-emerald-200">Ingrédients bio</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold">50+</div>
+                            <div class="text-emerald-200">Producteurs partenaires</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="relative">
+                    <div class="video-container w-full h-96 rounded-3xl shadow-2xl">
+                        <div class="flex flex-col items-center z-10 relative">
+                            <div class="w-20 h-20 bg-white bg-opacity-20 rounded-full flex items-center justify-center mb-6 backdrop-blur-sm">
+                                <span class="text-4xl">▶️</span>
+                            </div>
+                            <h3 class="text-xl font-semibold mb-2">Découvrez Petit Farmer</h3>
+                            <p class="text-center">De la ferme à votre cuisine en 3 étapes</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Recipes -->
+    <section id="recipes" class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-20">
+                <h2 class="text-5xl font-bold text-gray-900 mb-6">Nos recettes de la semaine</h2>
+                <p class="text-2xl text-gray-600 max-w-4xl mx-auto">Des plats créatifs et équilibrés, conçus par nos chefs avec les meilleurs ingrédients de saison</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
+                <div class="recipe-card">
+                    <div class="video-container h-56">
+                        <div class="flex flex-col items-center">
+                            <span class="text-4xl mb-3">🥗</span>
+                            <p class="font-medium">Salade de quinoa aux légumes grillés</p>
+                        </div>
+                    </div>
+                    <div class="p-8">
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full text-sm font-medium">Végétarien</span>
+                            <div class="flex items-center text-gray-500">
+                                <span class="mr-1">⏱️</span>
+                                <span>25 min</span>
+                            </div>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-3">Salade de quinoa aux légumes grillés</h3>
+                        <p class="text-gray-600 mb-6">Courgettes, poivrons et aubergines bio grillés sur lit de quinoa, avec une vinaigrette aux herbes fraîches.</p>
+                        <button onclick="selectRecipe('quinoa')" class="btn-primary text-white px-6 py-3 rounded-full font-semibold w-full">Choisir cette recette</button>
+                    </div>
+                </div>
+                
+                <div class="recipe-card">
+                    <div class="video-container h-56">
+                        <div class="flex flex-col items-center">
+                            <span class="text-4xl mb-3">🐟</span>
+                            <p class="font-medium">Saumon bio aux légumes de saison</p>
+                        </div>
+                    </div>
+                    <div class="p-8">
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">Poisson</span>
+                            <div class="flex items-center text-gray-500">
+                                <span class="mr-1">⏱️</span>
+                                <span>30 min</span>
+                            </div>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-3">Saumon bio aux légumes de saison</h3>
+                        <p class="text-gray-600 mb-6">Filet de saumon bio accompagné de brocolis, carottes et pommes de terre nouvelles, sauce citron-aneth.</p>
+                        <button onclick="selectRecipe('saumon')" class="btn-primary text-white px-6 py-3 rounded-full font-semibold w-full">Choisir cette recette</button>
+                    </div>
+                </div>
+                
+                <div class="recipe-card">
+                    <div class="video-container h-56">
+                        <div class="flex flex-col items-center">
+                            <span class="text-4xl mb-3">🍝</span>
+                            <p class="font-medium">Pâtes aux légumes du potager</p>
+                        </div>
+                    </div>
+                    <div class="p-8">
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-sm font-medium">Végétarien</span>
+                            <div class="flex items-center text-gray-500">
+                                <span class="mr-1">⏱️</span>
+                                <span>20 min</span>
+                            </div>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-3">Pâtes aux légumes du potager</h3>
+                        <p class="text-gray-600 mb-6">Penne complètes avec tomates cerises, courgettes, basilic frais et parmesan, directement du potager.</p>
+                        <button onclick="selectRecipe('pates')" class="btn-primary text-white px-6 py-3 rounded-full font-semibold w-full">Choisir cette recette</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-16">
+                <button onclick="showAllRecipes()" class="btn-secondary px-10 py-4 rounded-full font-semibold text-lg">Voir toutes nos recettes (500+)</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- How it works -->
+    <section id="how-it-works" class="py-24 bg-emerald-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-20">
+                <h2 class="text-5xl font-bold text-gray-900 mb-6">Comment ça marche ?</h2>
+                <p class="text-2xl text-gray-600">De la sélection à votre assiette, en 4 étapes simples</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-12">
+                <div class="text-center">
+                    <div class="step-number mx-auto mb-8"></div>
+                    <div class="step-number mx-auto mb-8">1</div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-6">Choisissez vos recettes</h3>
+                    <p class="text-gray-600 text-lg leading-relaxed">Sélectionnez parmi plus de 500 recettes créées par nos chefs, adaptées à tous les goûts et régimes alimentaires.</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="step-number mx-auto mb-8">2</div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-6">Nous préparons vos ingrédients</h3>
+                    <p class="text-gray-600 text-lg leading-relaxed">Nos producteurs partenaires récoltent et préparent tous les ingrédients frais, pré-dosés selon vos recettes.</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="step-number mx-auto mb-8">3</div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-6">Livraison à domicile</h3>
+                    <p class="text-gray-600 text-lg leading-relaxed">Recevez votre box réfrigérée directement chez vous, avec les fiches recettes détaillées et illustrées.</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="step-number mx-auto mb-8">4</div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-6">Cuisinez et savourez</h3>
+                    <p class="text-gray-600 text-lg leading-relaxed">Suivez nos recettes étape par étape et régalez-vous avec des plats sains et délicieux en famille.</p>
+                </div>
+            </div>
+            
+            <div class="mt-20">
+                <div class="video-container w-full max-w-5xl mx-auto h-96 rounded-3xl shadow-xl">
+                    <div class="flex flex-col items-center">
+                        <div class="w-24 h-24 bg-emerald-500 bg-opacity-20 rounded-full flex items-center justify-center mb-6 backdrop-blur-sm">
+                            <span class="text-4xl">▶️</span>
+                        </div>
+                        <h3 class="text-2xl font-semibold mb-3">Découvrez notre processus</h3>
+                        <p class="text-center text-lg">De la ferme à votre cuisine : notre engagement qualité</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Plans -->
+    <section id="pricing" class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-20">
+                <h2 class="text-5xl font-bold text-gray-900 mb-6">Choisissez votre formule</h2>
+                <p class="text-2xl text-gray-600">Des options flexibles pour tous les foyers</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-10 max-w-6xl mx-auto">
+                <div class="pricing-card">
+                    <div class="text-center mb-8">
+                        <h3 class="text-3xl font-bold text-gray-900 mb-4">Découverte</h3>
+                        <div class="text-6xl font-bold text-emerald-600 mb-2">29€</div>
+                        <p class="text-gray-600 text-lg">par semaine</p>
+                        <p class="text-sm text-gray-500 mt-2">2 personnes • 3 recettes</p>
+                    </div>
+                    <ul class="space-y-4 mb-10">
+                        <li class="flex items-center"><span class="text-emerald-500 mr-3 text-xl">✓</span><span class="text-lg">3 recettes pour 2 personnes</span></li>
+                        <li class="flex items-center"><span class="text-emerald-500 mr-3 text-xl">✓</span><span class="text-lg">Ingrédients bio pré-dosés</span></li>
+                        <li class="flex items-center"><span class="text-emerald-500 mr-3 text-xl">✓</span><span class="text-lg">Fiches recettes illustrées</span></li>
+                        <li class="flex items-center"><span class="text-emerald-500 mr-3 text-xl">✓</span><span class="text-lg">Livraison gratuite</span></li>
+                        <li class="flex items-center"><span class="text-emerald-500 mr-3 text-xl">✓</span><span class="text-lg">Pause ou arrêt à tout moment</span></li>
+                    </ul>
+                    <button onclick="selectPlan('decouverte')" class="w-full btn-secondary py-4 rounded-full font-bold text-lg">Choisir cette formule</button>
+                </div>
+                
+                <div class="pricing-card featured">
+                    <div class="popular-badge">
+                        <span>⭐</span>
+                        <span>Le plus populaire</span>
+                    </div>
+                    <div class="text-center mb-8">
+                        <h3 class="text-3xl font-bold text-gray-900 mb-4">Famille</h3>
+                        <div class="text-6xl font-bold text-emerald-600 mb-2">49€</div>
+                        <p class="text-gray-600 text-lg">par semaine</p>
+                        <p class="text-sm text-gray-500 mt-2">4 personnes • 4 recettes</p>
+                    </div>
+                    <ul class="space-y-4 mb-10">
+                        <li class="flex items-center"><span class="text-emerald-500 mr-3 text-xl">✓</span><span class="text-lg">4 recettes pour 4 personnes</span></li>
+                        <li class="flex items-center"><span class="text-emerald-500 mr-3 text-xl">✓</span><span class="text-lg">Ingrédients bio premium</span></li>
+                        <li class="flex items-center"><span class="text-emerald-500 mr-3 text-xl">✓</span><span class="text-lg">Recettes exclusives chef</span></li>
+                        <li class="flex items-center"><span class="text-emerald-500 mr-3 text-xl">✓</span><span class="text-lg">Livraison express gratuite</span></li>
+                        <li class="flex items-center"><span class="text-emerald-500 mr-3 text-xl">✓</span><span class="text-lg">Support prioritaire</span></li>
+                        <li class="flex items-center"><span class="text-emerald-500 mr-3 text-xl">✓</span><span class="text-lg">Accès app mobile premium</span></li>
+                    </ul>
+                    <button onclick="selectPlan('famille')" class="w-full btn-primary text-white py-4 rounded-full font-bold text-lg">Choisir cette formule</button>
+                </div>
+                
+                <div class="pricing-card">
+                    <div class="text-center mb-8">
+                        <h3 class="text-3xl font-bold text-gray-900 mb-4">Généreux</h3>
+                        <div class="text-6xl font-bold text-emerald-600 mb-2">69€</div>
+                        <p class="text-gray-600 text-lg">par semaine</p>
+                        <p class="text-sm text-gray-500 mt-2">6 personnes • 5 recettes</p>
+                    </div>
+                    <ul class="space-y-4 mb-10">
+                        <li class="flex items-center"><span class="text-emerald-500 mr-3 text-xl">✓</span><span class="text-lg">5 recettes pour 6 personnes</span></li>
+                        <li class="flex items-center"><span class="text-emerald-500 mr-3 text-xl">✓</span><span class="text-lg">Ingrédients bio ultra-premium</span></li>
+                        <li class="flex items-center"><span class="text-emerald-500 mr-3 text-xl">✓</span><span class="text-lg">Produits rares et de saison</span></li>
+                        <li class="flex items-center"><span class="text-emerald-500 mr-3 text-xl">✓</span><span class="text-lg">Consultation nutritionniste</span></li>
+                        <li class="flex items-center"><span class="text-emerald-500 mr-3 text-xl">✓</span><span class="text-lg">Cours de cuisine en ligne</span></li>
+                    </ul>
+                    <button onclick="selectPlan('genereux')" class="w-full btn-secondary py-4 rounded-full font-bold text-lg">Choisir cette formule</button>
+                </div>
+            </div>
+            
+            <div class="text-center mt-16">
+                <p class="text-xl text-gray-600 mb-8">🎁 <strong>Offre de lancement :</strong> -50% sur votre première commande</p>
+                <div class="flex justify-center space-x-8 text-lg text-gray-600">
+                    <div class="flex items-center"><span class="text-emerald-500 mr-2">✓</span> Aucun engagement</div>
+                    <div class="flex items-center"><span class="text-emerald-500 mr-2">✓</span> Pause à tout moment</div>
+                    <div class="flex items-center"><span class="text-emerald-500 mr-2">✓</span> Livraison gratuite</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About / Producers -->
+    <section id="about" class="py-24 bg-emerald-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-20">
+                <h2 class="text-5xl font-bold text-gray-900 mb-6">Nos producteurs partenaires</h2>
+                <p class="text-2xl text-gray-600">Une communauté de passionnés pour une agriculture durable</p>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-16 items-center mb-20">
+                <div>
+                    <h3 class="text-4xl font-bold text-gray-900 mb-8">Notre engagement pour une alimentation responsable</h3>
+                    <p class="text-xl text-gray-600 mb-8 leading-relaxed">Chez Petit Farmer, nous travaillons main dans la main avec plus de 50 producteurs locaux qui partagent notre vision d'une agriculture respectueuse de l'environnement et des hommes.</p>
+                    <div class="space-y-6">
+                        <div class="flex items-center">
+                            <div class="w-16 h-16 bg-emerald-500 rounded-full flex items-center justify-center mr-6">
+                                <span class="text-white text-2xl">🌱</span>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-bold text-gray-900">100% Bio certifié</h4>
+                                <p class="text-gray-600">Tous nos producteurs sont certifiés agriculture biologique</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-16 h-16 bg-emerald-500 rounded-full flex items-center justify-center mr-6">
+                                <span class="text-white text-2xl">📍</span>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-bold text-gray-900">Circuit ultra-court</h4>
+                                <p class="text-gray-600">Rayon maximum de 150km autour de Paris</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-16 h-16 bg-emerald-500 rounded-full flex items-center justify-center mr-6">
+                                <span class="text-white text-2xl">🤝</span>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-bold text-gray-900">Commerce équitable</h4>
+                                <p class="text-gray-600">Rémunération juste et partenariats durables</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="video-container h-96 rounded-3xl shadow-xl">
+                    <div class="flex flex-col items-center">
+                        <div class="w-20 h-20 bg-emerald-500 bg-opacity-20 rounded-full flex items-center justify-center mb-6 backdrop-blur-sm">
+                            <span class="text-3xl">▶️</span>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-3">Rencontrez nos producteurs</h3>
+                        <p class="text-center">Découvrez les visages derrière vos légumes</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Testimonials -->
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="testimonial-card">
+                    <div class="flex items-center mb-6">
+                        <div class="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mr-4">
+                            <span class="text-2xl">👨‍🌾</span>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-900">Pierre Dubois</h4>
+                            <p class="text-gray-600">Maraîcher bio - Seine-et-Marne</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 italic">Travailler avec Petit Farmer nous permet de nous concentrer sur ce qu'on fait de mieux : cultiver des légumes exceptionnels. Ils respectent notre travail et nos prix.</p>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="flex items-center mb-6">
+                        <div class="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mr-4">
+                            <span class="text-2xl">👩‍🌾</span>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-900">Marie Leroy</h4>
+                            <p class="text-gray-600">Éleveuse bio - Yvelines</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 italic">Nos œufs et produits laitiers trouvent enfin leur place auprès de consommateurs qui comprennent la valeur d'une production respectueuse du bien-être animal.</p>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="flex items-center mb-6">
+                        <div class="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mr-4">
+                            <span class="text-2xl">🧑‍🌾</span>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-900">Jean Martin</h4>
+                            <p class="text-gray-600">Arboriculteur - Val-d'Oise</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 italic">Petit Farmer valorise nos fruits de saison et nos variétés anciennes. C'est un partenariat qui donne du sens à notre métier de producteur.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-20">
+                <h2 class="text-5xl font-bold text-gray-900 mb-6">Contactez-nous</h2>
+                <p class="text-2xl text-gray-600">Notre équipe est là pour vous accompagner</p>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-16">
+                <div>
+                    <div class="space-y-10">
+                        <div class="flex items-center">
+                            <div class="w-16 h-16 bg-emerald-500 rounded-full flex items-center justify-center mr-6">
+                                <span class="text-white text-2xl">📞</span>
+                            </div>
+                            <div>
+                                <h3 class="text-2xl font-bold text-gray-900">Téléphone</h3>
+                                <a href="tel:0751403839" class="text-emerald-600 hover:text-emerald-700 text-xl">07 51 40 38 39</a>
+                                <p class="text-gray-600">Lun-Ven 9h-18h, Sam 9h-12h</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <div class="w-16 h-16 bg-emerald-500 rounded-full flex items-center justify-center mr-6">
+                                <span class="text-white text-2xl">✉️</span>
+                            </div>
+                            <div>
+                                <h3 class="text-2xl font-bold text-gray-900">Email</h3>
+                                <a href="mailto:contact@petitfarmer.com" class="text-emerald-600 hover:text-emerald-700 text-xl">contact@petitfarmer.com</a>
+                                <p class="text-gray-600">Réponse sous 24h garantie</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <div class="w-16 h-16 bg-emerald-500 rounded-full flex items-center justify-center mr-6">
+                                <span class="text-white text-2xl">📍</span>
+                            </div>
+                            <div>
+                                <h3 class="text-2xl font-bold text-gray-900">Adresse</h3>
+                                <p class="text-xl text-gray-700">60 rue François 1er</p>
+                                <p class="text-xl text-gray-700">Paris, France</p>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-emerald-50 p-8 rounded-2xl">
+                            <h4 class="text-xl font-bold text-gray-900 mb-4">🎯 Questions fréquentes</h4>
+                            <ul class="space-y-3 text-gray-700">
+                                <li>• <strong>Livraison :</strong> Mardi, Mercredi ou Jeudi selon votre zone</li>
+                                <li>• <strong>Fraîcheur :</strong> Garantie 7 jours ou remboursé</li>
+                                <li>• <strong>Allergies :</strong> Filtres disponibles dans votre profil</li>
+                                <li>• <strong>Pause :</strong> Possible jusqu'à 48h avant livraison</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <form onsubmit="submitContact(event)" class="space-y-8">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="firstName" class="block text-lg font-medium text-gray-700 mb-3">Prénom</label>
+                                <input type="text" id="firstName" name="firstName" required class="w-full px-6 py-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-lg">
+                            </div>
+                            <div>
+                                <label for="lastName" class="block text-lg font-medium text-gray-700 mb-3">Nom</label>
+                                <input type="text" id="lastName" name="lastName" required class="w-full px-6 py-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-lg">
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label for="email" class="block text-lg font-medium text-gray-700 mb-3">Email</label>
+                            <input type="email" id="email" name="email" required class="w-full px-6 py-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-lg">
+                        </div>
+                        
+                        <div>
+                            <label for="phone" class="block text-lg font-medium text-gray-700 mb-3">Téléphone (optionnel)</label>
+                            <input type="tel" id="phone" name="phone" class="w-full px-6 py-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-lg">
+                        </div>
+                        
+                        <div>
+                            <label for="subject" class="block text-lg font-medium text-gray-700 mb-3">Sujet</label>
+                            <select id="subject" name="subject" required class="w-full px-6 py-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-lg">
+                                <option value="">Choisissez un sujet</option>
+                                <option value="subscription">Question sur l'abonnement</option>
+                                <option value="delivery">Problème de livraison</option>
+                                <option value="recipes">Question sur les recettes</option>
+                                <option value="billing">Facturation</option>
+                                <option value="partnership">Partenariat producteur</option>
+                                <option value="other">Autre</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label for="message" class="block text-lg font-medium text-gray-700 mb-3">Message</label>
+                            <textarea id="message" name="message" rows="6" required class="w-full px-6 py-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-lg"></textarea>
+                        </div>
+                        
+                        <button type="submit" class="w-full btn-primary text-white py-5 rounded-xl font-bold text-xl">Envoyer le message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-emerald-900 text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-12">
+                <div>
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 bg-emerald-500 rounded-full flex items-center justify-center mr-3">
+                            <span class="text-white text-xl">🌱</span>
+                        </div>
+                        <span class="text-2xl font-bold">Petit Farmer</span>
+                    </div>
+                    <p class="text-emerald-200 text-lg leading-relaxed">Des recettes créatives et des ingrédients bio de nos producteurs locaux, livrés chez vous chaque semaine.</p>
+                    <div class="flex space-x-4 mt-6">
+                        <a href="#" class="w-12 h-12 bg-emerald-700 rounded-full flex items-center justify-center hover:bg-emerald-600 transition-colors">📘</a>
+                        <a href="#" class="w-12 h-12 bg-emerald-700 rounded-full flex items-center justify-center hover:bg-emerald-600 transition-colors">📷</a>
+                        <a href="#" class="w-12 h-12 bg-emerald-700 rounded-full flex items-center justify-center hover:bg-emerald-600 transition-colors">🐦</a>
+                        <a href="#" class="w-12 h-12 bg-emerald-700 rounded-full flex items-center justify-center hover:bg-emerald-600 transition-colors">📺</a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl font-bold mb-6">Nos services</h3>
+                    <ul class="space-y-3 text-emerald-200">
+                        <li><a href="#" onclick="scrollToSection('recipes')" class="hover:text-white transition-colors text-lg">Recettes & Ingrédients</a></li>
+                        <li><a href="#" onclick="scrollToSection('pricing')" class="hover:text-white transition-colors text-lg">Formules d'abonnement</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors text-lg">Livraison express</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors text-lg">App mobile</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors text-lg">Cartes cadeaux</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl font-bold mb-6">Support client</h3>
+                    <ul class="space-y-3 text-emerald-200">
+                        <li><a href="#" class="hover:text-white transition-colors text-lg">Centre d'aide</a></li>
+                        <li><a href="#" onclick="scrollToSection('contact')" class="hover:text-white transition-colors text-lg">Nous contacter</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors text-lg">Mon compte</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors text-lg">Suivi de commande</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors text-lg">Retours & remboursements</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl font-bold mb-6">À propos</h3>
+                    <ul class="space-y-3 text-emerald-200">
+                        <li><a href="#" onclick="scrollToSection('about')" class="hover:text-white transition-colors text-lg">Nos producteurs</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors text-lg">Notre mission</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors text-lg">Développement durable</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors text-lg">Carrières</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors text-lg">Presse</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-emerald-800 mt-12 pt-8">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <p class="text-emerald-200 text-lg">&copy; 2024 Petit Farmer. Tous droits réservés.</p>
+                    <div class="flex space-x-6 mt-4 md:mt-0">
+                        <a href="#" class="text-emerald-200 hover:text-white transition-colors">Mentions légales</a>
+                        <a href="#" class="text-emerald-200 hover:text-white transition-colors">Politique de confidentialité</a>
+                        <a href="#" class="text-emerald-200 hover:text-white transition-colors">CGV</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
+        <div class="bg-white rounded-3xl p-10 max-w-md w-full mx-4 shadow-2xl">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-3xl font-bold text-gray-900">Connexion</h2>
+                <button onclick="closeLoginModal()" class="text-gray-500 hover:text-gray-700 text-2xl">✕</button>
+            </div>
+            
+            <form onsubmit="handleLogin(event)">
+                <div class="space-y-6">
+                    <div>
+                        <label for="loginEmail" class="block text-lg font-medium text-gray-700 mb-3">Email</label>
+                        <input type="email" id="loginEmail" required class="w-full px-6 py-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-lg">
+                    </div>
+                    
+                    <div>
+                        <label for="loginPassword" class="block text-lg font-medium text-gray-700 mb-3">Mot de passe</label>
+                        <input type="password" id="loginPassword" required class="w-full px-6 py-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-lg">
+                    </div>
+                    
+                    <button type="submit" class="w-full btn-primary text-white py-4 rounded-xl font-bold text-lg">Se connecter</button>
+                </div>
+            </form>
+            
+            <div class="mt-8 text-center">
+                <p class="text-gray-600 text-lg">Pas encore de compte ? <a href="#" onclick="showSignup()" class="text-emerald-600 hover:text-emerald-700 font-semibold">Créer un compte</a></p>
+                <a href="#" class="text-emerald-600 hover:text-emerald-700 text-lg">Mot de passe oublié ?</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Messages -->
+    <div id="successMessage" class="fixed top-6 right-6 bg-emerald-500 text-white px-8 py-4 rounded-xl shadow-2xl hidden z-50 max-w-md">
+        <div class="flex items-center">
+            <span class="text-2xl mr-3">✅</span>
+            <span id="successText" class="text-lg font-medium"></span>
+        </div>
+    </div>
+
+    <script>
+        // Smooth scrolling
+        function scrollToSection(sectionId) {
+            document.getElementById(sectionId).scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+
+        // Modal functions
+        function openLoginModal() {
+            document.getElementById('loginModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        function showSignup() {
+            showSuccess('Inscription bientôt disponible ! En attendant, contactez-nous pour créer votre compte.');
+            closeLoginModal();
+        }
+
+        // Success message
+        function showSuccess(message) {
+            const successDiv = document.getElementById('successMessage');
+            const successText = document.getElementById('successText');
+            successText.textContent = message;
+            successDiv.classList.remove('hidden');
+            
+            setTimeout(() => {
+                successDiv.classList.add('hidden');
+            }, 5000);
+        }
+
+        // Plan and recipe selection
+        let selectedPlan = null;
+        let selectedRecipes = [];
+
+        function selectPlan(plan) {
+            selectedPlan = plan;
+            const planNames = {
+                'decouverte': 'Formule Découverte (29€/semaine)',
+                'famille': 'Formule Famille (49€/semaine)',
+                'genereux': 'Formule Généreux (69€/semaine)'
+            };
+            showSuccess(`${planNames[plan]} sélectionnée ! Contactez-nous pour finaliser votre abonnement.`);
+            setTimeout(() => {
+                scrollToSection('contact');
+            }, 2000);
+        }
+
+        function selectRecipe(recipe) {
+            const recipeNames = {
+                'quinoa': 'Salade de quinoa aux légumes grillés',
+                'saumon': 'Saumon bio aux légumes de saison',
+                'pates': 'Pâtes aux légumes du potager'
+            };
+            
+            if (!selectedRecipes.includes(recipe)) {
+                selectedRecipes.push(recipe);
+                showSuccess(`${recipeNames[recipe]} ajoutée à vos favoris ! Choisissez maintenant votre formule.`);
+                setTimeout(() => {
+                    scrollToSection('pricing');
+                }, 2000);
+            } else {
+                showSuccess(`${recipeNames[recipe]} est déjà dans vos favoris !`);
+            }
+        }
+
+        function showAllRecipes() {
+            showSuccess('Catalogue complet de recettes disponible après inscription ! Plus de 500 recettes vous attendent.');
+        }
+
+        // Form submissions
+        function handleLogin(event) {
+            event.preventDefault();
+            showSuccess('Connexion réussie ! Bienvenue dans votre espace Petit Farmer.');
+            closeLoginModal();
+        }
+
+        function submitContact(event) {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+            
+            // Simulate form submission
+            showSuccess('Message envoyé avec succès ! Notre équipe vous répondra dans les 24h.');
+            form.reset();
+        }
+
+        // Interactive animations and scroll effects
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate elements on scroll
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -100px 0px'
+            };
+
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            // Observe all animated elements
+            document.querySelectorAll('.card-hover, .recipe-card, .pricing-card, .testimonial-card').forEach(element => {
+                element.style.opacity = '0';
+                element.style.transform = 'translateY(30px)';
+                element.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+                observer.observe(element);
+            });
+
+            // Header scroll effect
+            let lastScrollTop = 0;
+            const header = document.querySelector('header');
+            
+            window.addEventListener('scroll', function() {
+                let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                
+                if (scrollTop > lastScrollTop && scrollTop > 100) {
+                    header.style.transform = 'translateY(-100%)';
+                } else {
+                    header.style.transform = 'translateY(0)';
+                }
+                lastScrollTop = scrollTop;
+            });
+
+            // Close modal on escape key
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape') {
+                    closeLoginModal();
+                }
+            });
+
+            // Close modal on backdrop click
+            document.getElementById('loginModal').addEventListener('click', function(event) {
+                if (event.target === this) {
+                    closeLoginModal();
+                }
+            });
+        });
+
+        // Add some interactive hover effects
+        document.addEventListener('mouseover', function(event) {
+            if (event.target.classList.contains('btn-primary') || event.target.classList.contains('btn-secondary')) {
+                event.target.style.transform = 'translateY(-2px) scale(1.02)';
+            }
+        });
+
+        document.addEventListener('mouseout', function(event) {
+            if (event.target.classList.contains('btn-primary') || event.target.classList.contains('btn-secondary')) {
+                event.target.style.transform = 'translateY(0) scale(1)';
+            }
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98fc0297b0909475',t:'MTc2MDY2NDQxMS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
+{
+  "image": "mcr.microsoft.com/devcontainers/universal:2",
+  "features": {}
+}
